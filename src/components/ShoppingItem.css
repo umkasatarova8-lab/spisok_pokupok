@@ -1,0 +1,63 @@
+.shopping-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.shopping-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+.item-price {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2563eb;
+  margin-top: 2px;
+}
+
+.delete-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.delete-btn:active {
+  transform: scale(0.92);
+}
+

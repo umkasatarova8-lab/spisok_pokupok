@@ -1,0 +1,236 @@
+.app-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.shopping-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  padding: 32px 28px;
+  border: 1px solid #f1f5f9;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.app-header .subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* Total Summary Card */
+.total-summary-card {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 20px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.summary-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.summary-amount {
+  font-size: 28px;
+  font-weight: 800;
+  margin-top: 4px;
+  letter-spacing: -0.5px;
+}
+
+.summary-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.items-badge {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.clear-all-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clear-all-btn:hover {
+  background: rgba(239, 68, 68, 0.8);
+  border-color: rgba(239, 68, 68, 0.9);
+}
+
+/* Add Item Form */
+.add-item-form {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.name-group {
+  flex: 3;
+}
+
+.price-group {
+  flex: 2;
+}
+
+.input-group input {
+  padding: 12px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.error-banner {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 13px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+.add-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.add-btn:active {
+  transform: translateY(1px);
+}
+
+/* List Section */
+.list-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+
+.items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 36px 16px;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.empty-desc {
+  font-size: 13px;
+  color: #64748b;
+}
+
+@media (max-width: 480px) {
+  .shopping-card {
+    padding: 20px 16px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .total-summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .summary-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+

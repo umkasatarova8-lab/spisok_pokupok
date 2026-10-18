@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Список покупок на React</title>
+  
+  <!-- Подключение React, ReactDOM и Babel через CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .shopping-card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+      padding: 32px 28px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .app-header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .app-header .subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .total-summary-card {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+    }
+
+    .summary-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .summary-amount {
+      font-size: 28px;
+      font-weight: 800;
+      margin-top: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .summary-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .items-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .clear-all-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .clear-all-btn:hover {
+      background: rgba(239, 68, 68, 0.8);
+      border-color: rgba(239, 68, 68, 0.9);
+    }
+
+    .add-item-form {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .name-group {
+      flex: 3;
+    }
+
+    .price-group {
+      flex: 2;
+    }
+
+    .input-group input {
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      background-color: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .error-banner {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 13px;
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+
+    .add-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .add-btn:active {
+      transform: translateY(1px);
+    }
+
+    .list-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 14px;
+    }
+
+    .items-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .shopping-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .shopping-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .item-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      word-break: break-word;
+    }
+
+    .item-price {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2563eb;
+      margin-top: 2px;
+    }
+
+    .delete-btn {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #fee2e2;
+      color: #ef4444;
+    }
+
+    .delete-btn:active {
+      transform: scale(0.92);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 36px 16px;
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+    }
+
+    .empty-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+
+    .empty-desc {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    @media (max-width: 480px) {
+      .shopping-card {
+        padding: 20px 16px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .total-summary-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .summary-right {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React-код с использованием Babel -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function ShoppingItem({ id, name, price, onDelete }) {
+      return (
+        <li className="shopping-item">
+          <div className="item-details">
+            <span className="item-name">{name}</span>
+            <span className="item-price">{Number(price).toLocaleString('ru-RU')} сом</span>
+          </div>
+          <button 
+            className="delete-btn" 
+            onClick={() => onDelete(id)}
+            title="Удалить товар"
+            aria-label={`Удалить ${name}`}
+          >
+            ✕
+          </button>
+        </li>
+      );
+    }
+
+    function App() {
+      const [items, setItems] = useState(() => {
+        const saved = localStorage.getItem('shopping_items_standalone');
+        if (saved) {
+          try {
+            return JSON.parse(saved);
+          } catch (e) {
+            console.error('Ошибка парсинга localStorage', e);
+          }
+        }
+        return [
+          { id: 1, name: 'Хлеб бородинский', price: 45 },
+          { id: 2, name: 'Молоко 3.2%', price: 90 },
+          { id: 3, name: 'Яблоки (1 кг)', price: 130 }
+        ];
+      });
+
+      const [nameInput, setNameInput] = useState('');
+      const [priceInput, setPriceInput] = useState('');
+      const [errorMessage, setErrorMessage] = useState('');
+
+      useEffect(() => {
+        localStorage.setItem('shopping_items_standalone', JSON.stringify(items));
+      }, [items]);
+
+      const totalPrice = items.reduce((sum, item) => sum + Number(item.price), 0);
+
+      const handleAddItem = (e) => {
+        e.preventDefault();
+
+        const trimmedName = nameInput.trim();
+        const parsedPrice = parseFloat(priceInput);
+
+        if (!trimmedName) {
+          setErrorMessage('Пожалуйста, введите название товара.');
+          return;
+        }
+
+        if (isNaN(parsedPrice) || parsedPrice <= 0) {
+          setErrorMessage('Пожалуйста, введите корректную цену (больше 0).');
+          return;
+        }
+
+        const newItem = {
+          id: Date.now(),
+          name: trimmedName,
+          price: parsedPrice
+        };
+
+        setItems((prevItems) => [...prevItems, newItem]);
+        setNameInput('');
+        setPriceInput('');
+        setErrorMessage('');
+      };
+
+      const handleDeleteItem = (id) => {
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      };
+
+      const handleClearAll = () => {
+        if (items.length > 0 && window.confirm('Вы уверены, что хотите очистить весь список?')) {
+          setItems([]);
+        }
+      };
+
+      return (
+        <div className="app-container">
+          <div className="shopping-card">
+            <header className="app-header">
+              <h1>Список покупок</h1>
+              <p className="subtitle">Удобный учет товаров и общей стоимости</p>
+            </header>
+
+            <div className="total-summary-card">
+              <div className="summary-left">
+                <span className="summary-label">Общая стоимость:</span>
+                <span className="summary-amount">
+                  {totalPrice.toLocaleString('ru-RU')} сом
+                </span>
+              </div>
+              <div className="summary-right">
+                <span className="items-badge">
+                  Товаров: <strong>{items.length}</strong>
+                </span>
+                {items.length > 0 && (
+                  <button 
+                    type="button" 
+                    className="clear-all-btn" 
+                    onClick={handleClearAll}
+                    title="Очистить всё"
+                  >
+                    Очистить
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <form className="add-item-form" onSubmit={handleAddItem}>
+              <div className="form-row">
+                <div className="input-group name-group">
+                  <label htmlFor="itemName">Название товара</label>
+                  <input
+                    id="itemName"
+                    type="text"
+                    placeholder="Например, Сыр пармезан"
+                    value={nameInput}
+                    onChange={(e) => {
+                      setNameInput(e.target.value);
+                      if (errorMessage) setErrorMessage('');
+                    }}
+                  />
+                </div>
+
+                <div className="input-group price-group">
+                  <label htmlFor="itemPrice">Цена (сом)</label>
+                  <input
+                    id="itemPrice"
+                    type="number"
+                    step="any"
+                    min="0"
+                    placeholder="150"
+                    value={priceInput}
+                    onChange={(e) => {
+                      setPriceInput(e.target.value);
+                      if (errorMessage) setErrorMessage('');
+                    }}
+                  />
+                </div>
+              </div>
+
+              {errorMessage && (
+                <div className="error-banner">
+                  {errorMessage}
+                </div>
+              )}
+
+              <button type="submit" className="add-btn">
+                + Добавить в список
+              </button>
+            </form>
+
+            <div className="list-section">
+              <h2>Товары в списке</h2>
+
+              {items.length === 0 ? (
+                <div className="empty-state">
+                  <p className="empty-title">Список покупок пуст</p>
+                  <p className="empty-desc">Добавьте первый товар, используя форму выше</p>
+                </div>
+              ) : (
+                <ul className="items-list">
+                  {items.map((item) => (
+                    <ShoppingItem
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      onDelete={handleDeleteItem}
+                    />
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
